@@ -1,1 +1,5 @@
 .idea
+db/conf.d
+db/data
+db/initdb.d
+logs/*
