@@ -1,0 +1,7 @@
+CREATE TABLE user (
+       user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+       email VARCHAR(100) NOT NULL UNIQUE,
+       name VARCHAR(50) NOT NULL,
+       phone VARCHAR(20),
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
