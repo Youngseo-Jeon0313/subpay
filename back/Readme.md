@@ -1,0 +1,17 @@
+# 정기 구독 결제 서비스
+- 사용자가 정기 구독을 신청하면, 결제일에 맞춰 결제를 진행하는 서비스
+- 정기 구독을 신청한 사용자는 결제일에 맞춰 결제 진행
+  - 결제 실패(카드 한도 초과 또는 카드 만료, 재고 부족, 결제 시스템 장애) 시, 재시도 및 알림 기능 제공
+  - 결제 성공 시, 알림 기능 제공
+
+# Tool
+- Airflow
+- Kotlin/SpringBoot
+- SpringBatch
+- React
+
+# 대충 Plan
+- DB 구축
+- Batch Pipeline 구축
+- API 및 간단한 UI 구축
+- Test code 작성 및 Test
