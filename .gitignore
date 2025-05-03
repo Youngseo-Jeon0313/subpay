@@ -4,3 +4,5 @@ db/data
 db/initdb.d
 logs/*
 airflow/dags/__pycache__/
+.gradle
+gradle
