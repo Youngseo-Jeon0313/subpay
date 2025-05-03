@@ -13,7 +13,6 @@ class UserDto {
         val id: Long,
         val name: String,
         val email: String,
-        val password: String,
         val createdAt: LocalDateTime,
         val updatedAt: LocalDateTime,
     )
