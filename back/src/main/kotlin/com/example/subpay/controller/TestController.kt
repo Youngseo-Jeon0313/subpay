@@ -1,14 +1,15 @@
 package com.example.subpay.controller
 
-import org.springframework.stereotype.Controller
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
+@RestController
+@RequestMapping("/api/v1/test")
 class TestController {
-
-    @GetMapping("/test")
-    fun test(): String {
-        return "test"
+    @GetMapping()
+    fun test(): ResponseEntity<String>  {// Changed to ResponseEntity<String> to match the return type{
+        return ResponseEntity.ok("Test API is working");
     }
-
 }
