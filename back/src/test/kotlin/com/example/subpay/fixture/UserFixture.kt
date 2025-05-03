@@ -1,7 +1,7 @@
 package com.example.subpay.fixture
 
 import com.appmattus.kotlinfixture.kotlinFixture
-import com.example.subpay.domain.dto.UserDto
+import com.example.subpay.domain.User
 import java.time.LocalDateTime
 
 object UserFixture {
@@ -14,13 +14,13 @@ object UserFixture {
         password: String? = null,
         createdAt: LocalDateTime? = null,
         updatedAt: LocalDateTime? = null,
-    ): UserDto.Response = fixture<UserDto.Response> {
+    ): User = fixture<User> {
         // 정의하지 않은 필드는 랜덤 데이터를 생성
-        id?.let { property(UserDto.Response::id) { it } }
-        name?.let { property(UserDto.Response::name) { it } }
-        email?.let { property(UserDto.Response::email) { it } }
-        password?.let { property(UserDto.Response::password) { it } }
-        createdAt?.let { property(UserDto.Response::createdAt) { it } }
-        updatedAt?.let { property(UserDto.Response::updatedAt) { it } }
+        id?.let { property(User::id) { it } }
+        name?.let { property(User::name) { it } }
+        email?.let { property(User::email) { it } }
+        password?.let { property(User::password) { it } }
+        createdAt?.let { property(User::createdAt) { it } }
+        updatedAt?.let { property(User::updatedAt) { it } }
     }
 }
