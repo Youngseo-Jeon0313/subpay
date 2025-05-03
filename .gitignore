@@ -3,3 +3,4 @@ db/conf.d
 db/data
 db/initdb.d
 logs/*
+airflow/dags/__pycache__/

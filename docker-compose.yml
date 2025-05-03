@@ -61,12 +61,14 @@ services:
     image: apache/airflow:2.8.1
     environment:
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/airflow/plugins
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/airflow/logs
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
       AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow_db
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
+      - ./airflow:/opt/airflow/airflow
     entrypoint: ["bash", "-c"]
     command: >
       "airflow db init &&
@@ -83,6 +85,9 @@ services:
       - "8082:8080"
     environment:
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/airflow/plugins
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/airflow/logs
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
       AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow_db
@@ -90,8 +95,7 @@ services:
       airflow-init:
         condition: service_completed_successfully
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
+      - ./airflow:/opt/airflow/airflow
     command: webserver
     networks:
       - airflow_network
@@ -100,12 +104,14 @@ services:
     image: apache/airflow:2.8.1
     environment:
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/airflow/plugins
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/airflow/logs
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
       AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow_db
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
+      - ./airflow:/opt/airflow/airflow
     command: scheduler
     depends_on:
       - airflow-webserver
@@ -116,12 +122,14 @@ services:
     image: apache/airflow:2.8.1
     environment:
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/airflow/plugins
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/airflow/logs
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
       AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow_db
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
+      - ./airflow:/opt/airflow/airflow
     command: celery worker
     depends_on:
       - airflow-scheduler
@@ -132,6 +140,9 @@ services:
     image: apache/airflow:2.8.1
     environment:
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/airflow/dags
+      AIRFLOW__CORE__PLUGINS_FOLDER: /opt/airflow/airflow/plugins
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/airflow/logs
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow_db
       AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow_db
