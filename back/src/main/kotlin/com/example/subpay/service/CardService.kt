@@ -3,6 +3,7 @@ package com.example.subpay.service
 import com.example.subpay.domain.Card
 import com.example.subpay.domain.dto.CardDto
 import com.example.subpay.repository.CardRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
@@ -10,6 +11,7 @@ class CardService (
     private val cardRepository: CardRepository,
 ){
 
+    @Transactional
     fun registerCard(cardDto: CardDto.Request) : CardDto.Response {
         val newCard = Card(
             userId = cardDto.userId,
@@ -34,7 +36,23 @@ class CardService (
         )
     }
 
-    fun deleteCard(cardId: Long) {
-
+    @Transactional
+    fun deleteCard(cardId: Long): List<CardDto.Response> {
+        val card = cardRepository.findById(cardId).orElseThrow {
+            IllegalArgumentException("해당 결제수단이 존재하지 않습니다.")
+        }
+        cardRepository.delete(card)
+        val cards = cardRepository.findByUserId(card.userId)
+        return cards.map {
+            CardDto.Response(
+                id = it.id!!,
+                userId = it.userId,
+                cardNumber = it.cardNumber,
+                expirationDate = it.expirationDate,
+                cvv = it.cvv,
+                balance = it.balance,
+                priority = it.priority
+            )
+        }
     }
 }

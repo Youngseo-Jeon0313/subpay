@@ -1,9 +1,9 @@
-package com.example.subpay.service
+package com.example.subpay.service.card
 
 import com.example.subpay.domain.dto.CardDto
 import com.example.subpay.fixture.CardFixture
-import com.example.subpay.fixture.UserFixture
 import com.example.subpay.repository.CardRepository
+import com.example.subpay.service.CardService
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -11,21 +11,12 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
 
-class CardTest : BehaviorSpec({
+class CreateCardTest : BehaviorSpec({
 
     val cardRepository = mockk<CardRepository>()
     val cardService = CardService(cardRepository)
 
     given("사용자가 결제수단을 등록할 때") {
-        val now = LocalDateTime.now()
-        val mockUser = UserFixture.generate(
-            1L,
-            "김철수",
-            "cheolsoo@gmail.com",
-            "password123",
-            now,
-            now
-        );
         `when`("카드 정보가 유효하다면(카드번호, 유효기간, CVV 등)") {
             val mockCard1 = CardDto.Request(
                 userId = 1L,
