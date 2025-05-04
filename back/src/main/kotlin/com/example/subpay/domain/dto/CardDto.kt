@@ -20,4 +20,9 @@ class CardDto {
         val cvv: Long,
         val balance: Long,
     )
+
+    data class CardPriorityUpdateRequest(
+        val userId: Long,
+        val cardIds: List<Long>
+    )
 }

@@ -14,11 +14,16 @@ data class Card (
     val expirationDate: LocalDateTime = LocalDateTime.now(),
     val cvv: Long = 0,
     val balance: Long = 0,
-    val priority: Int = 0,
+    var priority: Int = 0,
 ) {
     init {
         require(cardNumber.toString().length == 16) { "카드 번호는 16자리여야 합니다." }
         require(cvv.toString().length == 3) { "CVV는 3자리여야 합니다." }
         require(balance >= 0) { "잔액은 0 이상이어야 합니다." }
+    }
+
+    fun updatePriority(newPriority: Int) {
+        require(newPriority in 1..3) { "우선순위는 1~3 사이의 값이어야 합니다." }
+        this.priority = newPriority
     }
 }
