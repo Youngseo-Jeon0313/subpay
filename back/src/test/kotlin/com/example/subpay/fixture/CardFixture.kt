@@ -11,7 +11,7 @@ object CardFixture {
         userId: Long? = null,
         cardNumber: Long? = null,
         expirationDate: LocalDateTime? = null,
-        cvv: String? = null,
+        cvv: Long? = null,
         balance: Long? = null,
         priority: Int? = null,
     ): Card = fixture<Card> {
