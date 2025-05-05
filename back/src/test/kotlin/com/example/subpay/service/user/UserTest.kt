@@ -1,8 +1,9 @@
-package com.example.subpay.service
+package com.example.subpay.service.user
 
 import com.example.subpay.domain.dto.UserDto
 import com.example.subpay.fixture.UserFixture
 import com.example.subpay.repository.UserRepository
+import com.example.subpay.service.UserService
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

@@ -69,7 +69,7 @@ class CardService (
         }
 
         // 카드를 새로 받은 순서대로 우선순위 업데이트
-        val cardsToUpdate = existingCards.mapIndexed { index, card ->
+        val cardsToUpdate = existingCards.mapIndexed { _, card ->
             val newPriority = cardIds.indexOf(card.id) + 1
             card.updatePriority(newPriority)
             card
