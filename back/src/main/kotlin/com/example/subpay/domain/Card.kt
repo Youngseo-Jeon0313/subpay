@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "card")
-data class Card (
+data class Card(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
@@ -14,7 +14,7 @@ data class Card (
     val expirationDate: LocalDateTime = LocalDateTime.now(),
     val cvv: Long = 0,
     val balance: Long = 0,
-    var priority: Int = 0,
+    var priority: Int = 0
 ) {
     init {
         require(cardNumber.toString().length == 16) { "카드 번호는 16자리여야 합니다." }

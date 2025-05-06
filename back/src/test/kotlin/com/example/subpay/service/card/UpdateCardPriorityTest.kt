@@ -12,7 +12,7 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
 
-class UpdateCardPriorityTest: BehaviorSpec({
+class UpdateCardPriorityTest : BehaviorSpec({
 
     val cardRepository = mockk<CardRepository>()
     val cardService = CardService(cardRepository)
@@ -22,12 +22,33 @@ class UpdateCardPriorityTest: BehaviorSpec({
         `when`("사용자가 가진 카드 개수와 요청한 카드 개수가 일치할 때") {
             val userId = 1L
             val now = LocalDateTime.now()
-            val card1 = CardFixture.generate(id = 1L, userId = userId, priority = 1, balance = 1000L,
-                cardNumber = 1234567812345678L, expirationDate = now, cvv = 123)
-            val card2 = CardFixture.generate(id = 2L, userId = userId, priority = 2, balance = 2000L,
-                cardNumber = 2345678923456789L, expirationDate = now, cvv = 234)
-            val card3 = CardFixture.generate(id = 3L, userId = userId, priority = 3, balance  = 3000L,
-                cardNumber = 3456789034567890L, expirationDate = now, cvv = 345)
+            val card1 = CardFixture.generate(
+                id = 1L,
+                userId = userId,
+                priority = 1,
+                balance = 1000L,
+                cardNumber = 1234567812345678L,
+                expirationDate = now,
+                cvv = 123
+            )
+            val card2 = CardFixture.generate(
+                id = 2L,
+                userId = userId,
+                priority = 2,
+                balance = 2000L,
+                cardNumber = 2345678923456789L,
+                expirationDate = now,
+                cvv = 234
+            )
+            val card3 = CardFixture.generate(
+                id = 3L,
+                userId = userId,
+                priority = 3,
+                balance = 3000L,
+                cardNumber = 3456789034567890L,
+                expirationDate = now,
+                cvv = 345
+            )
             val existingCards = listOf(card1, card2, card3)
             val updateRequest = CardDto.CardPriorityUpdateRequest(
                 userId = userId,

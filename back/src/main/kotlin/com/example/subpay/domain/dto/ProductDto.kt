@@ -2,14 +2,14 @@ package com.example.subpay.domain.dto
 
 class ProductDto {
 
-    data class Request (
+    data class Request(
         val name: String,
         val price: Long,
         val description: String,
-        val imageUrl: String,
+        val imageUrl: String
     )
 
-    data class Response (
+    data class Response(
         val id: Long,
         val name: String,
         val description: String,

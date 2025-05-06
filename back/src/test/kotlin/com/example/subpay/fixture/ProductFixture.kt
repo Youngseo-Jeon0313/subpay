@@ -14,7 +14,7 @@ object ProductFixture {
         imageUrl: String = "",
         stockCount: Int = 0,
         createdAt: LocalDateTime = LocalDateTime.now(),
-        updatedAt: LocalDateTime = LocalDateTime.now(),
+        updatedAt: LocalDateTime = LocalDateTime.now()
     ): Product = fixture<Product> {
         // 정의하지 않은 필드는 랜덤 데이터를 생성
         property(Product::id) { id ?: fixture<Long>() }

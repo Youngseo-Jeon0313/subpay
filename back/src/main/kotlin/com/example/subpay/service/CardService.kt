@@ -7,12 +7,12 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
-class CardService (
-    private val cardRepository: CardRepository,
-){
+class CardService(
+    private val cardRepository: CardRepository
+) {
 
     @Transactional
-    fun registerCard(cardDto: CardDto.Request) : CardDto.Response {
+    fun registerCard(cardDto: CardDto.Request): CardDto.Response {
         val newCard = Card(
             userId = cardDto.userId,
             cardNumber = cardDto.cardNumber,

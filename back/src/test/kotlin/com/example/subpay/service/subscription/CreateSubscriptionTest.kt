@@ -1,7 +1,7 @@
 package com.example.subpay.service.subscription
 
 import com.example.subpay.domain.Subscription
-gimport com.example.subpay.domain.dto.SubscriptionDto
+import com.example.subpay.domain.dto.SubscriptionDto
 import com.example.subpay.fixture.ProductFixture
 import com.example.subpay.fixture.SubscriptionFixture
 import com.example.subpay.fixture.UserFixture
@@ -33,7 +33,7 @@ class CreateSubscriptionTest : BehaviorSpec({
                 subscriptionExpirationDate = now,
                 subscriptionStatus = Subscription.SubscriptionStatus.INACTIVE,
                 subscriptionCycleType = Subscription.SubscriptionCycleType.DAILY,
-                cycleDetails = null,
+                cycleDetails = null
             )
             every { subscriptionRepository.findByUserIdAndProductId(user.id!!, product.id!!) } returns subscriptionMock
 

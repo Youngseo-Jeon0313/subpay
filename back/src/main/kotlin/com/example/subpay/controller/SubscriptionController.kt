@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/subscription")
 class SubscriptionController(
-    private val subscriptionService: SubscriptionService,
+    private val subscriptionService: SubscriptionService
 ) {
 
     @PostMapping("/create")

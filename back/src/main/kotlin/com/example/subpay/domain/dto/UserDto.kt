@@ -6,7 +6,7 @@ class UserDto {
     data class Request(
         val name: String,
         val email: String,
-        val password: String,
+        val password: String
     )
 
     data class Response(
@@ -14,7 +14,6 @@ class UserDto {
         val name: String,
         val email: String,
         val createdAt: LocalDateTime,
-        val updatedAt: LocalDateTime,
+        val updatedAt: LocalDateTime
     )
-
 }

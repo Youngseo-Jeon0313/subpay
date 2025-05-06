@@ -28,7 +28,7 @@ class DeleteCardTest : BehaviorSpec({
                 balance = 10000L
             )
 
-            every { cardRepository.findByUserId(mockCard.userId) } returns listOf(mockCard) //mockCard 1개 있음
+            every { cardRepository.findByUserId(mockCard.userId) } returns listOf(mockCard) // mockCard 1개 있음
 
             every { cardRepository.findById(mockCard.id!!) } returns Optional.of(mockCard)
             every { cardRepository.delete(mockCard) } returns Unit

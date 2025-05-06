@@ -38,7 +38,7 @@ class UserTest : BehaviorSpec({
         }
     }
 
-    Given("User 정보를 가져올 때"){
+    Given("User 정보를 가져올 때") {
         When("User가 없으면") {
             Then("RuntimeException을 던진다.") {
                 shouldThrow<RuntimeException> {

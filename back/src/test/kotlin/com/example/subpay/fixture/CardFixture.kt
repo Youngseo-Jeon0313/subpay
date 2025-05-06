@@ -15,7 +15,7 @@ object CardFixture {
         expirationDate: LocalDateTime? = LocalDateTime.now(),
         cvv: Long? = generateCvv(),
         balance: Long? = null,
-        priority: Int? = null,
+        priority: Int? = null
     ): Card = fixture<Card> {
         id?.let { property(Card::id) { it } }
         userId?.let { property(Card::userId) { it } }

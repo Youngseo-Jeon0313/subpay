@@ -36,7 +36,7 @@ object SubscriptionFixture {
             subscriptionExpirationDate = finalSubscriptionExpirationDate,
             subscriptionStatus = subscriptionStatus,
             subscriptionCycleType = subscriptionCycleType,
-            cycleDetails = cycleDetails?: subscriptionCycleDetails
+            cycleDetails = cycleDetails ?: subscriptionCycleDetails
         )
     }
 }

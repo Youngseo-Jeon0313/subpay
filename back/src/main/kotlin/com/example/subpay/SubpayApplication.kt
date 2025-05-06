@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class SubpayApplication
 
 fun main(args: Array<String>) {
-	runApplication<SubpayApplication>(*args)
+    runApplication<SubpayApplication>(*args)
 }

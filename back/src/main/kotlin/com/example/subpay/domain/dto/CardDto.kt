@@ -18,7 +18,7 @@ class CardDto {
         val cardNumber: Long,
         val expirationDate: LocalDateTime,
         val cvv: Long,
-        val balance: Long,
+        val balance: Long
     )
 
     data class CardPriorityUpdateRequest(

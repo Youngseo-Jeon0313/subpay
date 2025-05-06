@@ -14,7 +14,7 @@ object UserFixture {
         email: String? = null,
         password: String? = null,
         createdAt: LocalDateTime? = null,
-        updatedAt: LocalDateTime? = null,
+        updatedAt: LocalDateTime? = null
     ): User = fixture<User> {
         // 정의하지 않은 필드는 랜덤 데이터를 생성
         property(User::id) { id ?: Random.nextLong(1, 10000) }
