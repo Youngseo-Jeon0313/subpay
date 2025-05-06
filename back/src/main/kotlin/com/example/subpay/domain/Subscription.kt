@@ -28,8 +28,12 @@ data class Subscription (
     init {
         require(subscriptionDate != null) { "구독 시작일은 필수입니다." }
         require(subscriptionExpirationDate != null) { "구독 만료일은 필수입니다." }
-        require(subscriptionCycleType == SubscriptionCycleType.DAILY && cycleDetails == null) { "주기 설정이 DAILY일 경우 cycleDetails는 null이어야 합니다." }
-        require(subscriptionCycleType != SubscriptionCycleType.DAILY && cycleDetails != null) { "주기 설정이 DAILY가 아닐 경우 cycleDetails는 필수입니다." }
+        require(
+            (subscriptionCycleType == SubscriptionCycleType.DAILY && cycleDetails == null) ||
+                    (subscriptionCycleType != SubscriptionCycleType.DAILY && cycleDetails != null)
+        ) {
+            "주기 설정이 DAILY이면 cycleDetails는 null이어야 하고, DAILY가 아니면 반드시 있어야 합니다."
+        }
     }
     enum class SubscriptionStatus {
         ACTIVE,

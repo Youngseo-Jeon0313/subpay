@@ -5,25 +5,38 @@ import com.example.subpay.domain.Subscription
 import java.time.LocalDateTime
 
 object SubscriptionFixture {
-    val fixture = kotlinFixture()
+    private val fixture = kotlinFixture()
 
     fun generate(
         id: Long? = null,
         userId: Long? = null,
         productId: Long? = null,
-        subscriptionDate: LocalDateTime? = LocalDateTime.now(),
-        subscriptionExpirationDate: LocalDateTime? = LocalDateTime.now(),
+        subscriptionDate: LocalDateTime? = null,
+        subscriptionExpirationDate: LocalDateTime? = null,
         subscriptionStatus: Subscription.SubscriptionStatus = Subscription.SubscriptionStatus.INACTIVE,
-        subscriptionCycleType: Subscription.SubscriptionCycleType? = null,
+        subscriptionCycleType: Subscription.SubscriptionCycleType? = Subscription.SubscriptionCycleType.DAILY,
         cycleDetails: String? = null
-    ): Subscription = fixture<Subscription> {
-        id?.let { property(Subscription::id) { it } }
-        userId?.let { property(Subscription::userId) { it } }
-        productId?.let { property(Subscription::productId) { it } }
-        subscriptionDate?.let { property(Subscription::subscriptionDate) { it } }
-        subscriptionExpirationDate?.let { property(Subscription::subscriptionExpirationDate) { it } }
-        subscriptionStatus.let { property(Subscription::subscriptionStatus) { it } }
-        subscriptionCycleType?.let { property(Subscription::subscriptionCycleType) { it } }
-        cycleDetails?.let { property(Subscription::cycleDetails) { it } }
+    ): Subscription {
+        val finalSubscriptionDate = subscriptionDate ?: LocalDateTime.now()
+        val finalSubscriptionExpirationDate = subscriptionExpirationDate ?: finalSubscriptionDate.plusMonths(1)
+
+        val subscriptionCycleDetails = when (subscriptionCycleType) {
+            Subscription.SubscriptionCycleType.WEEKLY -> "[\"MONDAY\", \"FRIDAY\"]"
+            Subscription.SubscriptionCycleType.MONTHLY -> "[\"1\", \"15\"]"
+            Subscription.SubscriptionCycleType.YEARLY -> "[\"03-01\", \"12-25\"]"
+            Subscription.SubscriptionCycleType.BIWEEKLY -> "[\"TUESDAY\"]"
+            else -> null
+        }
+
+        return Subscription(
+            id = id ?: fixture<Long>(),
+            userId = userId ?: fixture<Long>(),
+            productId = productId ?: fixture<Long>(),
+            subscriptionDate = finalSubscriptionDate,
+            subscriptionExpirationDate = finalSubscriptionExpirationDate,
+            subscriptionStatus = subscriptionStatus,
+            subscriptionCycleType = subscriptionCycleType,
+            cycleDetails = cycleDetails?: subscriptionCycleDetails
+        )
     }
 }
