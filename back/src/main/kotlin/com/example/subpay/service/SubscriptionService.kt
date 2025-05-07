@@ -11,7 +11,7 @@ class SubscriptionService(
     private val subscriptionRepository: SubscriptionRepository
 ) {
     @Transactional
-    fun createSubscription(request: SubscriptionDto.Request) {
+    fun createSubscription(request: SubscriptionDto.CreateRequest) {
         val subscription = Subscription(
             userId = request.userId,
             productId = request.productId,
@@ -27,5 +27,20 @@ class SubscriptionService(
             throw IllegalArgumentException("이미 구독하고 있는 상품입니다.")
         }
         subscriptionRepository.save(subscription)
+    }
+
+    @Transactional
+    fun deleteSubscription(request: SubscriptionDto.DeleteRequest): List<SubscriptionDto.Response>{
+        subscriptionRepository.deleteById(request.subscriptionId)
+        val subscriptionResponse = subscriptionRepository.findByUserId(request.userId)
+        return subscriptionResponse.map {
+            SubscriptionDto.Response(
+                productId = it.productId!!,
+                subscriptionDate = it.subscriptionDate!!,
+                subscriptionExpirationDate = it.subscriptionExpirationDate!!,
+                subscriptionStatus = it.subscriptionStatus.name,
+                subscriptionCycleType = it.subscriptionCycleType!!.name,
+            )
+        }
     }
 }

@@ -39,7 +39,7 @@ class CreateSubscriptionTest : BehaviorSpec({
 
             val exception = shouldThrowExactly<IllegalArgumentException> {
                 subscriptionService.createSubscription(
-                    SubscriptionDto.Request(
+                    SubscriptionDto.CreateRequest(
                         userId = user.id!!,
                         productId = product.id!!,
                         subscriptionDate = now,
