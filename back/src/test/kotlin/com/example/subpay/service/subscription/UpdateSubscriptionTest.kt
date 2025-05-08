@@ -8,11 +8,13 @@ import com.example.subpay.fixture.UserFixture
 import com.example.subpay.repository.SubscriptionRepository
 import com.example.subpay.service.SubscriptionService
 import io.kotest.core.spec.style.BehaviorSpec
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import java.time.LocalDateTime
+import java.util.*
 
-class DeleteSubscriptionTest : BehaviorSpec({
+class UpdateSubscriptionTest : BehaviorSpec({
 
     val subscriptionRepository = mockk<SubscriptionRepository>()
     val subscriptionService = SubscriptionService(subscriptionRepository)
@@ -20,7 +22,7 @@ class DeleteSubscriptionTest : BehaviorSpec({
     val user = UserFixture.generate()
     val now = LocalDateTime.now()
 
-    given("구독을 취소한다.") {
+    given("구독을 연장한다.") {
         `when`("구독이 존재한다면") {
             val product = ProductFixture.generate()
             val subscriptionMock = SubscriptionFixture.generate(
@@ -33,11 +35,28 @@ class DeleteSubscriptionTest : BehaviorSpec({
                 cycleDetails = null
             )
 
-            val deleteRequest = SubscriptionDto.DeleteRequest(userId = user.id!!, subscriptionId = subscriptionMock.id!!)
+            every { subscriptionRepository.findById(any()) } returns Optional.of(subscriptionMock)
 
-            then("구독 취소가 완료된다.") {
-                subscriptionService.deleteSubscription(deleteRequest)
-                verify(exactly = 1) { subscriptionRepository.deleteById(subscriptionMock.id!!) }
+            every { subscriptionRepository.save(any()) } returns subscriptionMock
+
+            val updateRequest = SubscriptionDto.UpdateRequest(
+                userId = user.id!!,
+                subscriptionId = subscriptionMock.id!!,
+                subscriptionDate = now,
+                subscriptionExpirationDate = now.plusMonths(6),
+                subscriptionStatus = "ACTIVE",
+                subscriptionCycleType = "MONTHLY",
+                cycleDetails = null,
+            )
+
+            then("구독 연장이 완료된다.") {
+                subscriptionService.updateSubscription(updateRequest)
+                verify(exactly = 1) {
+                    subscriptionRepository.findById(subscriptionMock.id!!)
+                }
+                verify(exactly = 1) {
+                    subscriptionRepository.save(any())
+                }
             }
         }
     }

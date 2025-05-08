@@ -36,11 +36,37 @@ class SubscriptionService(
         return subscriptionResponse.map {
             SubscriptionDto.Response(
                 productId = it.productId!!,
-                subscriptionDate = it.subscriptionDate!!,
-                subscriptionExpirationDate = it.subscriptionExpirationDate!!,
+                subscriptionDate = it.subscriptionDate,
+                subscriptionExpirationDate = it.subscriptionExpirationDate,
                 subscriptionStatus = it.subscriptionStatus.name,
                 subscriptionCycleType = it.subscriptionCycleType!!.name,
             )
         }
+    }
+
+    @Transactional
+    fun updateSubscription(request: SubscriptionDto.UpdateRequest): SubscriptionDto.Response {
+        val subscription = subscriptionRepository.findById(request.subscriptionId)
+            .orElseThrow { IllegalArgumentException("존재하지 않는 구독입니다.") }
+
+        val subscriptionStatus = Subscription.SubscriptionStatus.valueOf(request.subscriptionStatus.uppercase())
+        val subscriptionCycleType = Subscription.SubscriptionCycleType.valueOf(request.subscriptionCycleType.uppercase())
+        val cycleDetails = request.cycleDetails?.joinToString(",") // JSON으로 변환
+
+        subscription.subscriptionDate = request.subscriptionDate
+        subscription.subscriptionExpirationDate = request.subscriptionExpirationDate
+        subscription.subscriptionStatus = subscriptionStatus
+        subscription.subscriptionCycleType = subscriptionCycleType
+        subscription.cycleDetails = cycleDetails
+
+        val updatedSubscription = subscriptionRepository.save(subscription)
+
+        return SubscriptionDto.Response(
+            productId = updatedSubscription.productId!!,
+            subscriptionDate = updatedSubscription.subscriptionDate,
+            subscriptionExpirationDate = updatedSubscription.subscriptionExpirationDate,
+            subscriptionStatus = updatedSubscription.subscriptionStatus.name,
+            subscriptionCycleType = updatedSubscription.subscriptionCycleType!!.name
+        )
     }
 }

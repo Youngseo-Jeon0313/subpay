@@ -3,10 +3,7 @@ package com.example.subpay.controller
 import com.example.subpay.domain.dto.SubscriptionDto
 import com.example.subpay.service.SubscriptionService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/subscription")
@@ -24,5 +21,11 @@ class SubscriptionController(
     fun deleteSubscription(request: SubscriptionDto.DeleteRequest): ResponseEntity<List<SubscriptionDto.Response>>{
         val subscriptionList = subscriptionService.deleteSubscription(request)
         return ResponseEntity.ok(subscriptionList)
+    }
+
+    @PutMapping
+    fun updateSubscription(@RequestBody request: SubscriptionDto.UpdateRequest): ResponseEntity<SubscriptionDto.Response> {
+        val updatedSubscription = subscriptionService.updateSubscription(request)
+        return ResponseEntity.ok(updatedSubscription)
     }
 }

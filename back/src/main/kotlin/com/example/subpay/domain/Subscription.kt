@@ -11,29 +11,28 @@ data class Subscription(
     val id: Long? = null,
     val userId: Long? = null,
     val productId: Long? = null,
-    val subscriptionDate: LocalDateTime? = LocalDateTime.now(), // 구독 시작일
-    val subscriptionExpirationDate: LocalDateTime? = LocalDateTime.now(), // 구독 만료일
+    var subscriptionDate: LocalDateTime = LocalDateTime.now(), // 구독 시작일
+    var subscriptionExpirationDate: LocalDateTime = LocalDateTime.now(), // 구독 만료일
 
     @Enumerated(EnumType.STRING)
-    val subscriptionStatus: SubscriptionStatus = SubscriptionStatus.INACTIVE,
+    var subscriptionStatus: SubscriptionStatus = SubscriptionStatus.INACTIVE,
 
     @Enumerated(EnumType.STRING)
-    val subscriptionCycleType: SubscriptionCycleType? = null, // 구독 주기
+    var subscriptionCycleType: SubscriptionCycleType? = null, // 구독 주기
 
     // JSON으로 저장: 매주 -> ["MONDAY", "WEDNESDAY"], 매월 -> ["1", "15"], 매년 -> ["03-01", "12-25"]
     @Column(columnDefinition = "json")
-    val cycleDetails: String? = null // JSON 문자열
+    var cycleDetails: String? = null // JSON 문자열
 
 ) {
     init {
-        require(subscriptionDate != null) { "구독 시작일은 필수입니다." }
-        require(subscriptionExpirationDate != null) { "구독 만료일은 필수입니다." }
         require(
             (subscriptionCycleType == SubscriptionCycleType.DAILY && cycleDetails == null) ||
                 (subscriptionCycleType != SubscriptionCycleType.DAILY && cycleDetails != null)
         ) {
             "주기 설정이 DAILY이면 cycleDetails는 null이어야 하고, DAILY가 아니면 반드시 있어야 합니다."
         }
+
         when (subscriptionCycleType) {
             SubscriptionCycleType.YEARLY -> require(subscriptionExpirationDate.isAfter(subscriptionDate.plusYears(1))) {
                 "구독상품이 연간 상품일 경우, 구독 만료일은 구독 시작일로부터 1년 이후여야 합니다."
