@@ -25,29 +25,29 @@ data class Subscription(
     var cycleDetails: String? = null // JSON 문자열
 
 ) {
-    init {
+    fun validate() {
         require(
             (subscriptionCycleType == SubscriptionCycleType.DAILY && cycleDetails == null) ||
-                (subscriptionCycleType != SubscriptionCycleType.DAILY && cycleDetails != null)
+                    (subscriptionCycleType != SubscriptionCycleType.DAILY && cycleDetails != null)
         ) {
-            "주기 설정이 DAILY이면 cycleDetails는 null이어야 하고, DAILY가 아니면 반드시 있어야 합니다."
+            "주기 설정이 DAILY이면 cycleDetails는 null이어야 하고, 그 외엔 필수입니다."
         }
 
         when (subscriptionCycleType) {
             SubscriptionCycleType.YEARLY -> require(subscriptionExpirationDate.isAfter(subscriptionDate.plusYears(1))) {
-                "구독상품이 연간 상품일 경우, 구독 만료일은 구독 시작일로부터 1년 이후여야 합니다."
+                "연간 구독은 시작일로부터 최소 1년 이후 만료되어야 합니다."
             }
             SubscriptionCycleType.MONTHLY -> require(subscriptionExpirationDate.isAfter(subscriptionDate.plusMonths(1))) {
-                "구독상품이 월간 상품일 경우, 구독 만료일은 구독 시작일로부터 1개월 이후여야 합니다."
+                "월간 구독은 시작일로부터 최소 1개월 이후 만료되어야 합니다."
             }
             SubscriptionCycleType.WEEKLY -> require(subscriptionExpirationDate.isAfter(subscriptionDate.plusWeeks(1))) {
-                "구독상품이 주간 상품일 경우, 구독 만료일은 구독 시작일로부터 1주일 이후여야 합니다."
+                "주간 구독은 시작일로부터 최소 1주일 이후 만료되어야 합니다."
             }
             SubscriptionCycleType.BIWEEKLY -> require(subscriptionExpirationDate.isAfter(subscriptionDate.plusWeeks(2))) {
-                "구독상품이 격주 상품일 경우, 구독 만료일은 구독 시작일로부터 2주일 이후여야 합니다."
+                "격주 구독은 시작일로부터 최소 2주일 이후 만료되어야 합니다."
             }
             SubscriptionCycleType.DAILY -> require(subscriptionExpirationDate.isAfter(subscriptionDate.plusDays(1))) {
-                "구독상품이 일간 상품일 경우, 구독 만료일은 구독 시작일로부터 1일 이후여야 합니다."
+                "일간 구독은 시작일로부터 최소 1일 이후 만료되어야 합니다."
             }
             else -> {}
         }

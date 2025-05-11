@@ -16,10 +16,12 @@ data class Card(
     val balance: Long = 0,
     var priority: Int = 0
 ) {
-    init {
+    fun validate(): Boolean {
         require(cardNumber.toString().length == 16) { "카드 번호는 16자리여야 합니다." }
         require(cvv.toString().length == 3) { "CVV는 3자리여야 합니다." }
         require(balance >= 0) { "잔액은 0 이상이어야 합니다." }
+        require(priority in 0..3) { "우선순위는 0~3 사이여야 합니다." }
+        return true
     }
 
     fun updatePriority(newPriority: Int) {

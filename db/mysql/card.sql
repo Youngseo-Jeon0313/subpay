@@ -1,0 +1,17 @@
+CREATE TABLE card (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      userId BIGINT NOT NULL,
+      cardNumber BIGINT NOT NULL,
+      expirationDate DATETIME NOT NULL,
+      cvv INT NOT NULL,
+      balance BIGINT NOT NULL DEFAULT 0,
+      priority INT NOT NULL DEFAULT 0,
+);
+
+INSERT INTO card (userId, cardNumber, expirationDate, cvv, balance, priority)
+VALUES
+    (1, 1234567812345678, '2025-12-31 23:59:59', 123, 10000, 1),
+    (2, 2345678923456789, '2024-06-30 23:59:59', 456, 5000, 2),
+    (3, 3456789034567890, '2026-02-28 23:59:59', 789, 20000, 3),
+    (4, 4567890145678901, '2024-08-15 23:59:59', 234, 8000, 1),
+    (5, 5678901256789012, '2025-11-20 23:59:59', 567, 15000, 2);
