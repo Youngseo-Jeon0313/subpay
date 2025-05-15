@@ -15,6 +15,7 @@ import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.domain.Sort
 import org.springframework.transaction.PlatformTransactionManager
 import java.time.LocalDateTime
 
@@ -53,6 +54,7 @@ class SubscriptionStatusBatchJob(
             .repository(subscriptionRepository)
             .methodName("findAll")
             .pageSize(CHUNK_SIZE)
+            .sorts(mapOf("id" to Sort.Direction.ASC))
             .build()
 
     @Bean
