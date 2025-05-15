@@ -1,6 +1,9 @@
 package com.example.subpay.domain
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import jakarta.persistence.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
@@ -70,4 +73,35 @@ data class Subscription(
         JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE,
         JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
     } // TODO : 윤달 고려
+
+
+    fun isTodayInCycle(today: LocalDate): Boolean {
+        val mapper = jacksonObjectMapper()
+
+        if (subscriptionCycleType == SubscriptionCycleType.DAILY) {
+            return true
+        }
+
+        return when (subscriptionCycleType) {
+            SubscriptionCycleType.WEEKLY, SubscriptionCycleType.BIWEEKLY -> {
+                // ex: ["MONDAY", "WEDNESDAY"]
+                val days: List<String> = mapper.readValue(cycleDetails ?: "[]")
+                val todayDay = today.dayOfWeek.name // "MONDAY" 등
+                days.contains(todayDay)
+            }
+            SubscriptionCycleType.MONTHLY -> {
+                // ex: ["1", "15"]
+                val days: List<String> = mapper.readValue(cycleDetails ?: "[]")
+                val todayDay = today.dayOfMonth.toString()
+                days.contains(todayDay)
+            }
+            SubscriptionCycleType.YEARLY -> {
+                // ex: ["03-01", "12-25"] (MM-dd 형식)
+                val dates: List<String> = mapper.readValue(cycleDetails ?: "[]")
+                val todayStr = today.format(java.time.format.DateTimeFormatter.ofPattern("MM-dd"))
+                dates.contains(todayStr)
+            }
+            else -> false
+        }
+    }
 }

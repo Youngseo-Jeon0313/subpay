@@ -22,7 +22,7 @@ class SubscriptionContainsTodayTest : BehaviorSpec({
         )
         `when`("언제든지 호출하면") {
             then("항상 true를 반환한다") {
-                subscription.isTodayInCycle() shouldBe true
+                subscription.isTodayInCycle(today) shouldBe true
             }
         }
     }
@@ -34,7 +34,7 @@ class SubscriptionContainsTodayTest : BehaviorSpec({
                 cycleDetails = mapper.writeValueAsString(listOf("THURSDAY", "FRIDAY"))
             )
             then("true를 반환한다") {
-                subscription.isTodayInCycle() shouldBe true
+                subscription.isTodayInCycle(today) shouldBe true
             }
         }
     }
@@ -46,7 +46,7 @@ class SubscriptionContainsTodayTest : BehaviorSpec({
                 cycleDetails = mapper.writeValueAsString(listOf("15", "23"))
             )
             then("true를 반환한다") {
-                subscription.isTodayInCycle() shouldBe true
+                subscription.isTodayInCycle(today) shouldBe true
             }
         }
     }
@@ -58,7 +58,7 @@ class SubscriptionContainsTodayTest : BehaviorSpec({
                 cycleDetails = mapper.writeValueAsString(listOf("05-15", "08-20", "12-25"))
             )
             then("true를 반환한다") {
-                subscription.isTodayInCycle() shouldBe true
+                subscription.isTodayInCycle(today) shouldBe true
             }
         }
     }
@@ -70,7 +70,7 @@ class SubscriptionContainsTodayTest : BehaviorSpec({
                 cycleDetails = mapper.writeValueAsString(listOf("MONDAY", "FRIDAY"))
             )
             then("false를 반환한다") {
-                subscription.isTodayInCycle() shouldBe false
+                subscription.isTodayInCycle(today) shouldBe false
             }
         }
     }
@@ -82,7 +82,7 @@ class SubscriptionContainsTodayTest : BehaviorSpec({
                 cycleDetails = mapper.writeValueAsString(listOf("1", "2", "3"))
             )
             then("false를 반환한다") {
-                subscription.isTodayInCycle() shouldBe false
+                subscription.isTodayInCycle(today) shouldBe false
             }
         }
     }
