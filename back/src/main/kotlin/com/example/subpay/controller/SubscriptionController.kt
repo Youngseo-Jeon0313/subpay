@@ -12,13 +12,14 @@ class SubscriptionController(
 ) {
 
     @PostMapping
-    fun createSubscription(request: SubscriptionDto.CreateRequest): ResponseEntity<String> {
+    fun createSubscription(
+        @RequestBody request: SubscriptionDto.CreateRequest): ResponseEntity<String> {
         subscriptionService.createSubscription(request)
         return ResponseEntity.ok("구독 신청이 완료되었습니다")
     }
 
     @DeleteMapping
-    fun deleteSubscription(request: SubscriptionDto.DeleteRequest): ResponseEntity<List<SubscriptionDto.Response>>{
+    fun deleteSubscription(@RequestBody request: SubscriptionDto.DeleteRequest): ResponseEntity<List<SubscriptionDto.Response>>{
         val subscriptionList = subscriptionService.deleteSubscription(request)
         return ResponseEntity.ok(subscriptionList)
     }
