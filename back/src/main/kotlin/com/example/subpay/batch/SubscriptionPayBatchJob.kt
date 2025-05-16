@@ -2,6 +2,7 @@ package com.example.subpay.batch
 
 import com.example.subpay.domain.Subscription
 import com.example.subpay.repository.SubscriptionRepository
+import com.example.subpay.service.PayService
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.StepScope
@@ -12,6 +13,7 @@ import org.springframework.batch.item.ItemProcessor
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.Sort
@@ -21,7 +23,8 @@ import java.time.LocalDate
 @Configuration
 class SubscriptionPayBatchJob(
     private val jobRepository: JobRepository,
-    private val transactionManager: PlatformTransactionManager
+    private val transactionManager: PlatformTransactionManager,
+    private val payService: PayService,
 ) {
 
     @Bean
@@ -65,11 +68,17 @@ class SubscriptionPayBatchJob(
 
     @Bean
     @StepScope
-    fun writer(): ItemWriter<Subscription> =
+    fun writer(
+        @Value("#{jobParameters['dryRun']}") dryRun: Boolean? = false,
+    ): ItemWriter<Subscription> =
         ItemWriter { items ->
-            // TODO : 구독 결제
-            // TODO : product 재고 차감
+            if (dryRun == true) {
+                println("[DRY RUN] 결제가 수행될 구독 목록: $items")
+                return@ItemWriter
+            }
             items.forEach { subscription ->
+                val paymentHistory = payService.pay(subscription)
+                println("Payment history: $paymentHistory")
             }
         }
 

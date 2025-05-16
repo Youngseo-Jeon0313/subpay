@@ -13,7 +13,7 @@ data class Card(
     val cardNumber: Long = 0,
     val expirationDate: LocalDateTime = LocalDateTime.now(),
     val cvv: Long = 0,
-    val balance: Long = 0,
+    var balance: Long = 0,
     var priority: Int = 0
 ) {
     fun validate(): Boolean {

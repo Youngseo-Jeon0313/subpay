@@ -13,7 +13,7 @@ data class Product(
     val description: String = "",
     val price: Long = 0L,
     val imageUrl: String = "",
-    val stockCount: Int = 0,
+    var stockCount: Int = 0,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )
