@@ -1,5 +1,6 @@
 package com.example.subpay.config
 
+import io.sentry.Sentry
 import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -9,10 +10,13 @@ import java.time.LocalDateTime
 
 @RestControllerAdvice
 @Hidden
-class SimpleExceptionHandler {
+class ExceptionHandler {
 
     @ExceptionHandler(RuntimeException::class)
     fun handleRuntimeException(ex: RuntimeException): ResponseEntity<ApiError> {
+
+        Sentry.captureException(ex)
+
         return ResponseEntity(
             ApiError(
                 status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -25,6 +29,9 @@ class SimpleExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<ApiError> {
+
+        Sentry.captureException(ex)
+
         return ResponseEntity(
             ApiError(
                 status = HttpStatus.BAD_REQUEST.value(),

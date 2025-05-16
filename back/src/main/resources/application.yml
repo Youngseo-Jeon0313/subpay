@@ -1,18 +1,24 @@
+---
 spring:
   datasource:
-    url: jdbc:mysql://subpay_mysql:3306/subpay
+    url: jdbc:mysql://subpay_mysql:3306/subpay  # jdbc:mysql://localhost:3306/subpay
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
-      ddl-auto: update # or validate / create-drop based on your use case
+      ddl-auto: update  # or validate / create-drop based on your use case
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     format-sql: true
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+#      name: subscriptionPayJob
 
   # Optional if using Flyway for migrations
   # flyway:
@@ -22,3 +28,9 @@ logging:
   level:
     root: INFO
     org.hibernate.SQL: DEBUG
+    org.springframework.batch: DEBUG
+sentry:
+  dsn: ${SENTRY_DSN}
+  traces-sample-rate: 1.0
+  send-default-pii: true
+  debug: true
