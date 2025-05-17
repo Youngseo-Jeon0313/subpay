@@ -39,7 +39,7 @@ class CardService(
     @Transactional
     fun deleteCard(cardId: Long): List<CardDto.Response> {
         val card = cardRepository.findById(cardId).orElseThrow {
-            IllegalArgumentException("해당 결제수단이 존재하지 않습니다.")
+            IllegalArgumentException("해당 카드가 존재하지 않습니다.")
         }
         cardRepository.delete(card)
         val cards = cardRepository.findByUserId(card.userId)

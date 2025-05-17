@@ -18,7 +18,8 @@ class CardController(
     }
 
     @DeleteMapping("/delete")
-    fun deleteCard(cardId: Long): ResponseEntity<List<CardDto.Response>> {
+    fun deleteCard(@RequestBody cardId: Long, userId: Long): ResponseEntity<List<CardDto.Response>> {
+        // TODO : userId 검증 필요
         val response = cardService.deleteCard(cardId)
         return ResponseEntity.ok(response)
     }
