@@ -46,6 +46,10 @@ dependencies {
 	//sentry
 	implementation("io.sentry:sentry-spring-boot-starter:6.19.0")
 	implementation("io.sentry:sentry-logback:6.19.0")
+
+	// retry
+	implementation("org.springframework.retry:spring-retry:1.3.3")
+	implementation("org.springframework:spring-aspects:5.3.22")
 }
 
 tasks.named('test') {

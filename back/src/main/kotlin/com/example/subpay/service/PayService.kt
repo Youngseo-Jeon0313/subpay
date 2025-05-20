@@ -7,6 +7,8 @@ import com.example.subpay.repository.PaymentHistoryRepository
 import com.example.subpay.repository.ProductRepository
 import com.example.subpay.repository.SubscriptionRepository
 import jakarta.transaction.Transactional
+import org.springframework.retry.annotation.Backoff
+import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -19,6 +21,11 @@ class PayService(
 ) {
 
     @Transactional
+    @Retryable(
+        value = [RuntimeException::class],
+        maxAttempts = 3,
+        backoff = Backoff(delay = 100)
+    )
     fun pay(subscription: Subscription): PaymentHistory {
 
         val cards = cardRepository.findByUserId(subscription.userId!!)
