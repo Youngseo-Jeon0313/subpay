@@ -35,6 +35,7 @@ class PayService(
         usableCard.let { card ->
             card.balance -= product.price
             product.stockCount -= 1
+            productRepository.save(product)
             cardRepository.save(card)
         }
 
