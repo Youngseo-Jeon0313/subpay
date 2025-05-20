@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update  # or validate / create-drop based on your use case
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -17,20 +17,36 @@ spring:
     jdbc:
       initialize-schema: always
     job:
-      enabled: false
+      enabled: true
 #      name: subscriptionPayJob
-
-  # Optional if using Flyway for migrations
-  # flyway:
-  #   enabled: true
-  #   locations: classpath:db/migration
 logging:
   level:
     root: INFO
+    org.hibernate.SQL: DEBUG
+    org.springframework.batch: INFO
+sentry:
+  dsn: ${SENTRY_DSN}
+  traces-sample-rate: 1.0
+  send-default-pii: true
+  debug: false
+---
+
+# batch 프로파일 전용 설정
+spring:
+  profiles: batch
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+#      name: subscriptionPayJob
+logging:
+  level:
+    root: DEBUG
     org.hibernate.SQL: DEBUG
     org.springframework.batch: DEBUG
 sentry:
   dsn: ${SENTRY_DSN}
   traces-sample-rate: 1.0
   send-default-pii: true
-  debug: true
+  debug: false

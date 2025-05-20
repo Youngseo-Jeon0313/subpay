@@ -1,7 +1,11 @@
 FROM gradle:8.5-jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle build --no-daemon -x test
+RUN gradle build --no-daemon \
+      -x test \
+      -x ktlintMainSourceSetCheck \
+      -x ktlintTestSourceSetCheck \
+      -x sentryBundleSourcesJava
 RUN ls -l /home/gradle/src/build/libs
 
 FROM openjdk:17-jdk-slim

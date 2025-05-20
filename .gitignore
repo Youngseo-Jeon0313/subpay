@@ -6,3 +6,4 @@ logs/*
 airflow/dags/__pycache__/
 .gradle
 gradle
+airflow/logs
