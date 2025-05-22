@@ -38,14 +38,14 @@ class SubscriptionStatusBatchJob(
     ): Step =
         StepBuilder(STEP_NAME, jobRepository)
             .chunk<Subscription, Subscription>(CHUNK_SIZE, transactionManager)
-            .reader(reader(subscriptionRepository))
-            .processor(processor())
-            .writer(writer(subscriptionRepository))
+            .reader(subscriptionStatusReader(subscriptionRepository))
+            .processor(subscriptionStatusProcessor())
+            .writer(subscriptionStatusWriter(subscriptionRepository))
             .build()
 
     @Bean
     @StepScope
-    fun reader(
+    fun subscriptionStatusReader(
         subscriptionRepository: SubscriptionRepository
     ): ItemReader<Subscription> =
         RepositoryItemReaderBuilder<Subscription>()
@@ -58,7 +58,7 @@ class SubscriptionStatusBatchJob(
 
     @Bean
     @StepScope
-    fun processor(
+    fun subscriptionStatusProcessor(
         @Value("#{jobParameters['checkTime']}") checkTime: String? = null
     ): ItemProcessor<Subscription, Subscription> =
         ItemProcessor { subscription ->
@@ -78,7 +78,7 @@ class SubscriptionStatusBatchJob(
 
     @Bean
     @StepScope
-    fun writer(
+    fun subscriptionStatusWriter(
         subscriptionRepository: SubscriptionRepository,
         @Value("#{jobParameters['dryRun']}") dryRun: Boolean? = false,
     ): ItemWriter<Subscription> {
