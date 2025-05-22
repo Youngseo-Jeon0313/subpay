@@ -7,3 +7,4 @@ airflow/dags/__pycache__/
 .gradle
 gradle
 airflow/logs
+airflow/dags/config/__pycache__/
