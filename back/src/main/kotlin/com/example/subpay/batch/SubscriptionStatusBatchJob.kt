@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.PlatformTransactionManager
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Configuration
 class SubscriptionStatusBatchJob(
@@ -33,20 +34,18 @@ class SubscriptionStatusBatchJob(
 
     @Bean
     fun subscriptionStatusStep(
-        reader: ItemReader<Subscription>,
-        processor: ItemProcessor<Subscription, Subscription>,
-        writer: ItemWriter<Subscription>
+        subscriptionRepository: SubscriptionRepository,
     ): Step =
         StepBuilder(STEP_NAME, jobRepository)
             .chunk<Subscription, Subscription>(CHUNK_SIZE, transactionManager)
-            .reader(reader)
-            .processor(processor)
-            .writer(writer)
+            .reader(reader(subscriptionRepository))
+            .processor(processor())
+            .writer(writer(subscriptionRepository))
             .build()
 
     @Bean
     @StepScope
-    fun subscriptionStatusReader(
+    fun reader(
         subscriptionRepository: SubscriptionRepository
     ): ItemReader<Subscription> =
         RepositoryItemReaderBuilder<Subscription>()
@@ -59,9 +58,15 @@ class SubscriptionStatusBatchJob(
 
     @Bean
     @StepScope
-    fun subscriptionStatusProcessor(): ItemProcessor<Subscription, Subscription> =
+    fun processor(
+        @Value("#{jobParameters['checkTime']}") checkTime: String? = null
+    ): ItemProcessor<Subscription, Subscription> =
         ItemProcessor { subscription ->
-            val now = LocalDateTime.now()
+            val now = if (checkTime != null) {
+                LocalDateTime.parse(checkTime, DateTimeFormatter.ofPattern("yyyy-MM-dd-HH"))
+            } else {
+                LocalDateTime.now()
+            }
             if (subscription.subscriptionStatus == Subscription.SubscriptionStatus.ACTIVE &&
                 subscription.subscriptionExpirationDate.isBefore(now)) {
                 subscription.subscriptionStatus = Subscription.SubscriptionStatus.INACTIVE
@@ -73,14 +78,12 @@ class SubscriptionStatusBatchJob(
 
     @Bean
     @StepScope
-    fun subscriptionStatusWriter(
+    fun writer(
         subscriptionRepository: SubscriptionRepository,
-        @Value("#{jobParameters['dryRun']}") dryRun: String?
+        @Value("#{jobParameters['dryRun']}") dryRun: Boolean? = false,
     ): ItemWriter<Subscription> {
-        val isDryRun = dryRun?.toBooleanStrictOrNull() ?: false
-
         return ItemWriter { subscriptions ->
-            if (isDryRun) {
+            if (dryRun == true) {
                 println("[DRY RUN] ${subscriptions.size()}개의 구독 상태가 업데이트 될 예정입니다.")
                 subscriptions.forEach {
                     println("→ ${it.id} 상태 변경 예정: ${it.subscriptionStatus}")

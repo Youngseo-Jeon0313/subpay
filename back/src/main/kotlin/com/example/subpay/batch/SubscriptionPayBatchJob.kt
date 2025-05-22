@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.Sort
 import org.springframework.transaction.PlatformTransactionManager
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Configuration
 class SubscriptionPayBatchJob(
@@ -60,9 +61,15 @@ class SubscriptionPayBatchJob(
 
     @Bean
     @StepScope
-    fun processor(): ItemProcessor<Subscription, Subscription> =
+    fun processor(
+        @Value("#{jobParameters['targetDate']}") targetDate: String? = null,
+    ): ItemProcessor<Subscription, Subscription> =
         ItemProcessor { subscription ->
-            val today = LocalDate.now() // TODO : 일배치 시점에 맞게 변경
+            val today = if (targetDate != null) {
+                LocalDate.parse(targetDate, DateTimeFormatter.ISO_DATE)
+            } else {
+                LocalDate.now()
+            }
             subscription.takeIf { it.isTodayInCycle(today) }
         }
 
